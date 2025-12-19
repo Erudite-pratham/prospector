@@ -6,117 +6,103 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useUser } from "@/context/auth";
 import { clearCookies, getProfileAction } from "@/lib/actions/auth";
 
-interface NavbarProps {
-    title: string;
-    showBack?: boolean;
-}
+export function Navbar() {
+  const router = useRouter();
+  const { user, setUser } = useUser();
+  const [mounted, setMounted] = useState(false);
 
-export function Navbar({ title, showBack = false }: NavbarProps) {
-    const router = useRouter();
-    const { user, setUser } = useUser();
-    const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
-    const pathname = usePathname();
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const data = await getProfileAction();
-            setMounted(true);
-            if (data) {
-                setUser(data);
-            }
-        };
-        fetchProfile();
-    }, []);
-
-    const handleLogout = async () => {
-        await clearCookies();
-        router.push("/login");
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await getProfileAction();
+      setMounted(true);
+      if (data) {
+        setUser(data);
+      }
     };
+    fetchProfile();
+  }, []);
 
-    const handleBack = () => {
-        router.back();
-    };
+  const handleLogout = async () => {
+    await clearCookies();
+    router.push("/login");
+  };
 
-    return (
-        pathname !== "/login" && (<nav className="bg-white dark:bg-gray-800 shadow-sm border-b sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
-                    <div className="flex items-center gap-3">
-                        {showBack && (
-                            <Button variant="ghost" size="sm" >
-                                ← Back
-                            </Button>
-                        )}
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                                <span className="text-primary-foreground font-bold text-sm">
-                                    C
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="font-semibold text-sm">Consultadd</span>
-                                <span className="text-muted-foreground text-sm">|</span>
-                                <h1 className="font-medium text-sm">{title}</h1>
-                            </div>
-                        </div>
-                    </div>
-                    {mounted && user && (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="relative h-10 w-10 rounded-full"
-                                >
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarFallback className="bg-primary text-primary-foreground">
-                                            {user.name
-                                                .split(" ")
-                                                .map((n) => n[0])
-                                                .join("")
-                                                .toUpperCase()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56" align="end" forceMount>
-                                <DropdownMenuLabel className="font-normal">
-                                    <div className="flex flex-col space-y-1">
-                                        <p className="text-sm font-medium leading-none">
-                                            {user.name}
-                                        </p>
-                                        <p className="text-xs leading-none text-muted-foreground">
-                                            {user.email}
-                                        </p>
-                                        {/* <p className="text-xs leading-none text-muted-foreground mt-1">
+  return (
+    pathname !== "/login" && (
+      <nav className="bg-white dark:bg-gray-800 shadow-sm border-b sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-sm">
+                    C
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-sm">Consultadd</span>
+                </div>
+              </div>
+            </div>
+            {mounted && user && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        {user.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                      {/* <p className="text-xs leading-none text-muted-foreground mt-1">
                                             {user.role}
                                         </p> */}
-                                    </div>
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                    onClick={handleLogout}
-                                    className="text-red-600 cursor-pointer"
-                                >
-                                    Logout
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    )}
-                </div>
-            </div>
-        </nav>)
-    );
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-red-600 cursor-pointer"
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
+      </nav>
+    )
+  );
 }

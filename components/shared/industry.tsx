@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { ArrowUpRight } from "lucide-react";
 import { Badge } from "../ui/badge";
-
 
 interface Company {
   id: string;
@@ -33,30 +38,32 @@ export const Industry = ({ initCompanies }: { initCompanies: Company[] }) => {
       ) : (
         <Tabs defaultValue="account" className="w-full">
           <TabsList className="w-full">
-            <TabsTrigger value="account">Insights</TabsTrigger>
+            <TabsTrigger value="account">Analytics</TabsTrigger>
             <TabsTrigger value="password">Companies</TabsTrigger>
           </TabsList>
-          <TabsContent value="account">Insights</TabsContent>
+          <TabsContent value="account">Analytics</TabsContent>
 
-          <TabsContent value="password" className="w-full grid grid-cols-1 gap-4 mt-2">
+          <TabsContent
+            value="password"
+            className="w-full grid grid-cols-1 gap-4 mt-2"
+          >
             {companies.map((company) => {
               return (
-                <Link key={company.id} href={`/industry/${company.industry}/${company.id}`}>
+                <Link
+                  key={company.id}
+                  href={`/industry/${company.industry}/${company.id}`}
+                >
                   <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardHeader >
+                    <CardHeader>
                       <div className="flex justify-between">
-                        <CardTitle>
-                          {company.companyName}
-                        </CardTitle>
+                        <CardTitle>{company.companyName}</CardTitle>
                         <ArrowUpRight className="text-muted-foreground" />
                       </div>
-                      <CardDescription>
-                        {company.domain}
-                      </CardDescription>
+                      <CardDescription>{company.domain}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-x-2">
                       <Badge>{company.industry}</Badge>
-                      <Badge variant={'secondary'}>{company.subIndustry}</Badge>
+                      <Badge variant={"secondary"}>{company.subIndustry}</Badge>
                     </CardContent>
                   </Card>
                 </Link>
@@ -64,9 +71,7 @@ export const Industry = ({ initCompanies }: { initCompanies: Company[] }) => {
             })}
           </TabsContent>
         </Tabs>
-
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };

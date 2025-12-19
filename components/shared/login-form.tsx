@@ -1,23 +1,23 @@
 "use client";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { loginAction } from "@/lib/actions/auth";
 import { useUser } from "@/context/auth";
 
@@ -25,9 +25,8 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-
-  const [email, setEmail] = useState("admin@consultadd.com");
-  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { setUser } = useUser();
@@ -53,11 +52,11 @@ export function LoginForm({
       router.push("/");
     } catch (error) {
       console.error("Error during login:", error);
-      alert("Login failed. Please check your credentials and try again.");
+      alert("Invalid email or password. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -65,20 +64,20 @@ export function LoginForm({
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your email and password to access your account.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">Email address</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="m@example.com"
+                  placeholder="name@consultadd.com"
                   disabled={isLoading}
                   required
                 />
@@ -90,7 +89,7 @@ export function LoginForm({
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="1234"
+                  placeholder="••••••••"
                   disabled={isLoading}
                   required
                 />
@@ -99,14 +98,11 @@ export function LoginForm({
                 <Button type="submit" disabled={isLoading}>
                   {isLoading ? "Logging in..." : "Log In"}
                 </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
-                </FieldDescription>
               </Field>
             </FieldGroup>
           </form>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

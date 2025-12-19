@@ -45,14 +45,21 @@ export const Dashboard = ({
           {industries.map((industry) => {
             return (
               <Link key={industry.code} href={`/industry/${industry.code}`}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                <Card
+                  className="group
+    cursor-pointer
+    transition-all
+    duration-200
+    hover:bg-accent
+    hover:border-primary/30
+    hover:shadow-md
+    hover:-translate-y-0.5
+        "
+                >
                   <CardHeader>
-                    {/* <div
-                                            className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-2`}
-                                        >
-                                            {industry.icon}
-                                        </div> */}
-                    {industry.iconUrl}
+                    <div className="w-16 h-16 rounded-full border-2 border-gray-300 flex items-center justify-center mb-2 overflow-hidden">
+                      {industry.iconUrl}
+                    </div>
                     <CardTitle className="text-xl">{industry.name}</CardTitle>
                   </CardHeader>
                 </Card>
