@@ -37,6 +37,19 @@ export interface CallDetailsInterface {
     category: string;
     industryContext: string;
   }[];
-
+  solutionsPitched: {
+    solutionDescription: string;
+    addressedProblem: string;
+    fitLabel: string;
+  }[];
+  summaryRows: {
+    problem: string;
+    solutionPitched: string;
+    clientObjection: string;
+    objectionHandling: string;
+    clientReaction: string;
+  }[];
+  keyTakeaways: string[];
+  followUpActions: string[];
   consultAddRepresentative: string;
 }
