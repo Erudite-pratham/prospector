@@ -1,5 +1,4 @@
-import { apiClient } from "./client";
-import type { ApiResponse } from "./types";
+import { apiServer } from "./api.server";
 
 export type ClientProblem = {
   problemDescription: string;
@@ -23,7 +22,7 @@ export type Call = {
 };
 
 export async function getCallsByCompany(companyId: string) {
-  const res = await apiClient<ApiResponse<Call[]>>(
+  const res = await apiServer<Call[]>(
     `/calls/company/${companyId}`,
   );
 

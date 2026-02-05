@@ -1,8 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { apiClient } from "./client";
-import { ApiResponse } from "./types";
+import { apiServer } from "./api.server";
 
 const COOKIE_NAME = "token";
 
@@ -19,7 +18,7 @@ function getCookieOptions() {
 }
 
 export async function loginUser(payload: { email: string; password: string }) {
-  const res = await apiClient<ApiResponse<{ message: string }>>("/auth/login", {
+  const res = await apiServer<{ message: string }>("/auth/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });

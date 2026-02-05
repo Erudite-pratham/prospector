@@ -1,5 +1,4 @@
-import { apiClient } from "./client";
-import type { ApiResponse } from "./types";
+import { apiServer } from "./api.server";
 
 export type Industry = {
   id: string;
@@ -8,12 +7,12 @@ export type Industry = {
 };
 
 export async function getIndustryById(id: string): Promise<Industry> {
-  const res = await apiClient<ApiResponse<Industry>>(`/industries/${id}`);
+  const res = await apiServer<Industry>(`/industries/${id}`);
 
   return res.data;
 }
 
 export async function getIndustries() {
-  const res = await apiClient<ApiResponse<Industry[]>>("/industries");
+  const res = await apiServer<Industry[]>("/industries");
   return res.data;
 }

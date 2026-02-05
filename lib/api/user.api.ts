@@ -1,5 +1,4 @@
-import { apiClient } from "./client";
-import type { ApiResponse } from "./types";
+import { apiServer } from "./api.server";
 
 export type UserProfile = {
   name: string;
@@ -9,6 +8,6 @@ export type UserProfile = {
 };
 
 export async function getMyProfile() {
-  const res = await apiClient<ApiResponse<UserProfile>>("/users/getMyProfile");
+  const res = await apiServer<UserProfile>("/users/getMyProfile");
   return res.data;
 }

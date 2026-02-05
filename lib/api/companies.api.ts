@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { apiServer } from "./api.server";
 
 export type Company = {
   id: string;
@@ -9,16 +9,8 @@ export type Company = {
   createdAt: string;
 };
 
-type CompaniesResponse = {
-  timestamp: string;
-  data: Company[];
-  error: string | null;
-};
-
 export async function getCompaniesByIndustry(industryId: string) {
-  const res = await apiClient<CompaniesResponse>(
-    `/companies/industry/${industryId}`,
-  );
+  const res = await apiServer<Company[]>(`/companies/industry/${industryId}`);
 
   return res.data;
 }
