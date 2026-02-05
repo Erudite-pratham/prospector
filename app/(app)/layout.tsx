@@ -5,9 +5,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <main>
-        <MaxWidthWrapper>{children}</MaxWidthWrapper>
-      </main>
+      <MaxWidthWrapper>{children}</MaxWidthWrapper>
     </>
   );
 }

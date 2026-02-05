@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getMyProfile, UserProfile } from "@/lib/api/user.api";
 import { logout } from "@/lib/api/auth.api";
+import Image from "next/image";
 
 import {
   DropdownMenu,
@@ -35,16 +36,16 @@ export function Navbar() {
   }
 
   return (
-    <header className="border-b sticky">
-      <nav className="mx-auto h-14 max-w-7xl flex justify-between items-center px-4">
+    <header className="border-b sticky top-0 z-50 bg-background">
+      <nav className="mx-auto h-16 max-w-7xl flex justify-between items-center px-4">
         {/* Logo */}
-        <Link href="/" className="font-semibold">
-          MyApp
+        <Link href="/">
+          <Image src="/logo.svg" alt="Prospector Logo" width={64} height={64} />
         </Link>
         {user && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-sm font-medium">
+              <button className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-sm font-medium">
                 {user.name.charAt(0)}
               </button>
             </DropdownMenuTrigger>
