@@ -1,25 +1,49 @@
-import { apiClient } from "./client";
+"use server";
 
-type LoginPayload = {
-  email: string;
-  password: string;
-};
+import { cookies } from "next/headers";
+import { apiClient } from "./client";
+import { ApiResponse } from "./types";
+
+const COOKIE_NAME = "token";
+
+function getCookieOptions() {
+  const isProd = process.env.NODE_ENV === "production";
+
+  return {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: 60 * 60 * 24, // 1 day
+  };
+}
 
 export async function loginUser(payload: { email: string; password: string }) {
-  const res = await fetch("/api/auth/login", {
+  const res = await apiClient<ApiResponse<{ message: string }>>("/auth/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => null);
-    throw new Error(err?.message || "Login failed");
+  const token = res.data.message;
+
+  if (!token) {
+    throw new Error("No token returned from server");
   }
 
-  return res.json();
+  // ✅ cookies() IS ASYNC IN NEW NEXT
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME, token, getCookieOptions());
+
+  return { success: true };
 }
 
 export async function logout() {
-  await fetch("/api/auth/logout", { method: "POST" });
+  const cookieStore = await cookies();
+
+  cookieStore.set(COOKIE_NAME, "", {
+    path: "/",
+    maxAge: 0,
+  });
+
+  return { success: true };
 }
